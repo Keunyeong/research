@@ -1,17 +1,28 @@
 import styled from "styled-components";
 
+const userArr = [
+  { id: "master", mnum: "123" },
+  { id: "lee", mnum: "234" },
+];
+
 export default function Login() {
   const submitEvent = (e) => {
     e.preventDefault();
-    console.log(e);
-    const name = e.target.name;
-    const mnum = e.target.mnum;
-    console.log(name + "/" + mnum);
-
-    if (name === " " || mnum === " ") {
-      alert("다시 입력해주세요.");
+    const name = e.target.name.value;
+    const mnum = e.target.mnum.value;
+    const isName = userArr.filter((item) => item.id === name);
+    if (name === "" || mnum === "") {
+      alert("모두 입력해주세요.");
     } else {
-      console.log(name + "/" + mnum);
+      if (isName[0]) {
+        if (isName[0].mnum === mnum) {
+          alert("로그인 되었습니다.");
+        } else {
+          alert("비밀번호를 확인해 주세요.");
+        }
+      } else {
+        console.log("No ID");
+      }
     }
   };
   return (
@@ -47,7 +58,7 @@ const LogoBox = styled.div`
   margin-bottom: 30px;
 
   img {
-    width: 400px;
+    width: 350px;
     object-fit: contain;
   }
 `;
