@@ -1,11 +1,17 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Subjects, { SubjectsContext } from "../store/Subjects";
 
 const userArr = [
-  { id: "master", mnum: "123" },
-  { id: "lee", mnum: "234" },
+  { id: "master", mnum: "123", name: "관리자" },
+  { id: "lee", mnum: "234", name: "사용자" },
 ];
 
 export default function Login() {
+  const navigator = useNavigate();
+  const context = useContext(SubjectsContext);
+  const { setUsername } = context;
   const submitEvent = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -17,6 +23,8 @@ export default function Login() {
       if (isName[0]) {
         if (isName[0].mnum === mnum) {
           alert("로그인 되었습니다.");
+          setUsername(isName[0].name);
+          navigator("/research");
         } else {
           alert("비밀번호를 확인해 주세요.");
         }

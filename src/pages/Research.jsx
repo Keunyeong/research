@@ -134,7 +134,7 @@ export default function Research() {
       >
         <InputBox width="270px" position="space-between">
           <label htmlFor="name">이름 :</label>
-          <input type="text" name="name" />
+          <input type="text" name="name" value={username} disabled />
         </InputBox>
         <InputBox width="270px" position="space-between">
           <label htmlFor="both">생년월일 :</label>
