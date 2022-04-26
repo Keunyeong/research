@@ -1,11 +1,13 @@
 import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { readData } from "../firebase/firebase";
 import { SubjectsContext } from "../store/Subjects";
 
 export default function List() {
+  const nav = useNavigate();
   const context = useContext(SubjectsContext);
-  const { arr, setArr } = context;
+  const { arr, setArr, setList } = context;
   const name = sessionStorage.getItem("name");
   useEffect(() => {
     readData(setArr, "list");
@@ -24,7 +26,19 @@ export default function List() {
                 {name === "master" ? (
                   <button>다운로드</button>
                 ) : (
-                  <button>조사시작</button>
+                  <button
+                    onClick={() => {
+                      const object = {
+                        code: item.code,
+                        position: item.position,
+                        title: item.title,
+                      };
+                      setList(object);
+                      nav("/research");
+                    }}
+                  >
+                    조사시작
+                  </button>
                 )}
               </div>
             </li>

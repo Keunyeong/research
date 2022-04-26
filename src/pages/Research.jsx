@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { readData } from "../firebase/firebase";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { SubjectsContext } from "../store/Subjects";
 import writeXlsxFile from "write-excel-file";
+import Check10 from "./checkpages/Check10";
+import Check11 from "./checkpages/Check11";
+import Check12 from "./checkpages/Check12";
 
 const data = [
   // Row #1
@@ -89,9 +91,8 @@ const data = [
 
 export default function Research() {
   const navigate = useNavigate();
-  const [datata, setDatata] = useState([]);
   const context = useContext(SubjectsContext);
-  const { username, email, setUsername } = context;
+  const { username, setUsername, list } = context;
   const excelWirte = async (data) => {
     await writeXlsxFile(data, {
       fileName: "file.xlsx",
@@ -100,11 +101,13 @@ export default function Research() {
   return (
     <ResearchPage>
       <h1>
-        Research Page {username}/{email}
+        {list.position} {list.title}
       </h1>
+      {list.code === 10 && <Check10></Check10>}
+      {list.code === 11 && <Check11></Check11>}
+      {list.code === 12 && <Check12></Check12>}
       <button
-        onClick={async () => {
-          await readData(setDatata);
+        onClick={() => {
           excelWirte(data);
         }}
       >

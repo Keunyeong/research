@@ -6,7 +6,7 @@ export const SubjectsContext = createContext();
 export default function Subjects(props) {
   // props로 지정하고 싶은 상태를 만들어준다.
   const [username, setUsername] = useState("이근영");
-  const [email, setEmail] = useState("이메일");
+  const [list, setList] = useState({});
   const [arr, setArr] = useState([]);
 
   return (
@@ -14,8 +14,8 @@ export default function Subjects(props) {
       value={{
         username,
         setUsername,
-        email,
-        setEmail,
+        list,
+        setList,
         arr,
         setArr,
       }}
