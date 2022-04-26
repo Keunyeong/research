@@ -1,38 +1,36 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { readData } from "../firebase/firebase";
+import { login } from "../firebase/firebase";
 import { SubjectsContext } from "../store/Subjects";
-
-const userArr = [
-  { id: "master", mnum: "123", name: "관리자" },
-  { id: "lee", mnum: "234", name: "사용자" },
-];
 
 export default function Login() {
   const navigator = useNavigate();
   const context = useContext(SubjectsContext);
   const { setUsername } = context;
+  const [isLogin, setIsLogin] = useState("none");
+  useEffect(() => {
+    if (isLogin === "fail") {
+      alert("다시 입력해주세요.");
+    } else if (isLogin === "none") {
+      console.log("로그인 준비");
+    } else {
+      alert("로그인 되었습니다.");
+      sessionStorage.setItem("id", isLogin.id);
+      setUsername(isLogin.name);
+      navigator("/list");
+    }
+  }, [isLogin, navigator, setUsername]);
   const submitEvent = (e) => {
     e.preventDefault();
+
     const name = e.target.name.value;
     const mnum = e.target.mnum.value;
-    const isName = userArr.filter((item) => item.id === name);
     if (name === "" || mnum === "") {
       alert("모두 입력해주세요.");
     } else {
-      if (isName[0]) {
-        if (isName[0].mnum === mnum) {
-          alert("로그인 되었습니다.");
-          setUsername(isName[0].name);
-          sessionStorage.setItem("name", name);
-          navigator("/list");
-        } else {
-          alert("비밀번호를 확인해 주세요.");
-        }
-      } else {
-        console.log("No ID");
-      }
+      const loginData = { id: name, pw: mnum };
+      login("user", loginData, setIsLogin);
     }
   };
   return (

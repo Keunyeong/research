@@ -35,10 +35,28 @@ export const readData = async (setData, data) => {
     const arr = [];
     querySnapshot.forEach((doc) => {
       const item = doc.data();
-      console.log(item);
       arr.push(item);
     });
     setData(arr);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+export const login = async (data, login, setIsLogin) => {
+  try {
+    const querySnapshot = await getDocs(collection(db, data));
+    let isLogin = "fail";
+    querySnapshot.forEach((doc) => {
+      const id = doc.data().id;
+      const pw = doc.data().pw;
+      const isId = id === login.id;
+      if (isId) {
+        if (pw === login.pw) {
+          isLogin = doc.data();
+        }
+      }
+    });
+    setIsLogin(isLogin);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
