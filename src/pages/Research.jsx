@@ -92,7 +92,6 @@ export default function Research() {
   const [datata, setDatata] = useState([]);
   const context = useContext(SubjectsContext);
   const { username, email, setUsername } = context;
-  console.log(datata);
   const excelWirte = async (data) => {
     await writeXlsxFile(data, {
       fileName: "file.xlsx",

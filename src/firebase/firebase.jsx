@@ -29,18 +29,15 @@ export const addData = async () => {
   }
 };
 
-export const readData = async (setData) => {
+export const readData = async (setData, data) => {
   try {
-    const querySnapshot = await getDocs(collection(db, "users"));
+    const querySnapshot = await getDocs(collection(db, data));
     const arr = [];
     querySnapshot.forEach((doc) => {
       const item = doc.data();
       console.log(item);
       arr.push(item);
-      // console.log(doc.id);
-      // console.log(`${doc.id} => ${doc.data()}`);
     });
-    console.log(arr);
     setData(arr);
   } catch (e) {
     console.error("Error adding document: ", e);

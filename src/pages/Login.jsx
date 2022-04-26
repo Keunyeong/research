@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Subjects, { SubjectsContext } from "../store/Subjects";
+import { readData } from "../firebase/firebase";
+import { SubjectsContext } from "../store/Subjects";
 
 const userArr = [
   { id: "master", mnum: "123", name: "관리자" },
@@ -24,7 +25,8 @@ export default function Login() {
         if (isName[0].mnum === mnum) {
           alert("로그인 되었습니다.");
           setUsername(isName[0].name);
-          navigator("/research");
+          sessionStorage.setItem("name", name);
+          navigator("/list");
         } else {
           alert("비밀번호를 확인해 주세요.");
         }
