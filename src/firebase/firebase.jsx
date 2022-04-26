@@ -17,13 +17,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export const addData = async () => {
+export const addData = async (date, data) => {
   try {
-    const docRef = await addDoc(collection(db, "users"), {
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815,
-    });
+    const docRef = await addDoc(collection(db, date), data);
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
@@ -36,10 +32,8 @@ export const readData = async (setData, data) => {
     const arr = [];
     querySnapshot.forEach((doc) => {
       const item = doc.data();
-      console.log(item);
       arr.push(item);
     });
-    console.log(arr);
     setData(arr);
   } catch (e) {
     console.error("Error adding document: ", e);
@@ -77,7 +71,6 @@ export const allData = async (setData, data, code) => {
 
     querySnapshot.forEach((doc) => {
       const item = doc.data();
-      console.log(item.code);
       if (item.code === Number(code)) {
         const data = [
           // Column #1
@@ -108,7 +101,6 @@ export const allData = async (setData, data, code) => {
         arr = [...arr, data];
       }
     });
-    console.log(arr);
     const excel = async (arr, title) => {
       await writeXlsxFile(arr, {
         fileName: `${title}.xlsx`, // 파일명

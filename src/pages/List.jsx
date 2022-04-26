@@ -1,4 +1,5 @@
-import { useContext, useEffect } from "react";
+import { useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { allData, readData } from "../firebase/firebase";
@@ -7,14 +8,28 @@ import { SubjectsContext } from "../store/Subjects";
 export default function List() {
   const nav = useNavigate();
   const context = useContext(SubjectsContext);
-  const { arr, setArr, dataArr, setDataArr } = context;
+  const { arr, setArr, setDataArr } = context;
   const name = sessionStorage.getItem("id");
+  const [date, setDate] = useState("2022-01-01");
+  const dateRef = useRef();
+  useEffect(() => {
+    dateRef.current.value = date;
+  });
   useEffect(() => {
     readData(setArr, "list");
-  }, [setArr]);
+    setDate(new Date().toISOString().substring(0, 10));
+    sessionStorage.setItem("date", date.replace("-", "").replace("-", ""));
+  }, [setArr, date]);
+
   return (
     <ListPage>
       <h1>조사 목록</h1>
+      {name === "master" ? (
+        <input type="date" ref={dateRef} />
+      ) : (
+        <input type="date" ref={dateRef} disabled />
+      )}
+
       <ListBox>
         {arr.map((item, index) => {
           return (
@@ -25,11 +40,12 @@ export default function List() {
               <div className="btn-box">
                 {name === "master" ? (
                   <button
-                    onClick={() => {
-                      (async () => {
-                        await allData(setDataArr, "20220425", item.code);
-                      })();
-                      console.log(dataArr);
+                    onClick={async () => {
+                      await allData(
+                        setDataArr,
+                        sessionStorage.getItem("date"),
+                        item.code
+                      );
                     }}
                   >
                     다운로드
