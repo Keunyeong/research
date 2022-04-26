@@ -40,6 +40,22 @@ export const readData = async (setData, data) => {
   }
 };
 
+export const countData = async (setData, data, code) => {
+  try {
+    const querySnapshot = await getDocs(collection(db, data));
+    const arr = [];
+    querySnapshot.forEach((doc) => {
+      const item = doc.data();
+      if (doc.data().code === Number(code)) {
+        arr.push(item);
+      }
+    });
+    setData(arr.length);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+
 export const allData = async (setData, data, code) => {
   try {
     const querySnapshot = await getDocs(collection(db, data));

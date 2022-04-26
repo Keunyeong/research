@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import ListCount from "../elements/ListCount";
 import { allData, readData } from "../firebase/firebase";
 import { SubjectsContext } from "../store/Subjects";
 
@@ -10,22 +11,32 @@ export default function List() {
   const context = useContext(SubjectsContext);
   const { arr, setArr, setDataArr } = context;
   const name = sessionStorage.getItem("id");
-  const [date, setDate] = useState("2022-01-01");
+  const [date, setDate] = useState(
+    new Date().toISOString().substring(0, 10).replace("-", "").replace("-", "")
+  );
   const dateRef = useRef();
   useEffect(() => {
-    dateRef.current.value = date;
-  });
+    dateRef.current.value = new Date().toISOString().substring(0, 10);
+  }, []);
   useEffect(() => {
     readData(setArr, "list");
-    setDate(new Date().toISOString().substring(0, 10));
     sessionStorage.setItem("date", date.replace("-", "").replace("-", ""));
   }, [setArr, date]);
-
   return (
     <ListPage>
       <h1>조사 목록</h1>
       {name === "master" ? (
-        <input type="date" ref={dateRef} />
+        <input
+          type="date"
+          ref={dateRef}
+          onChange={(e) => {
+            setDate(e.target.value.replace("-", "").replace("-", ""));
+            sessionStorage.setItem(
+              "date",
+              e.target.value.replace("-", "").replace("-", "")
+            );
+          }}
+        />
       ) : (
         <input type="date" ref={dateRef} disabled />
       )}
@@ -48,7 +59,7 @@ export default function List() {
                       );
                     }}
                   >
-                    다운로드
+                    <ListCount date={date} code={item.code} text="다운로드" />
                   </button>
                 ) : (
                   <button
