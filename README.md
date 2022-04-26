@@ -1,70 +1,87 @@
-# Getting Started with Create React App
+# 공항 이용 고객 조사 페이지 작성
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 사용 기술
 
-## Available Scripts
+javascript, react.js
 
-In the project directory, you can run:
+styled-components
 
-### `npm start`
+firebase (firestore)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+write-excel-file
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+contextAPI
 
-### `npm test`
+## 기능
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### 1. 조사원 로그인, 작성 조사원 이름 등록.
 
-### `npm run build`
+#### 2. 조사 분류별 다른 작성 페이지
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### 3. 한번에 여러명을 관찰하여 여러개를 한번에 작성할 수 있도록 제작.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### 4. 데이터 저장 & 중간 저장
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### 5. 관리자로 접속하여 쌓인 데이터를 일자별, 조사 분류별로 엑셀로 다운로드.
 
-### `npm run eject`
+## 구현
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 1. 조사원 로그인, 작성 조사원 이름 등록.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### 1) 로그인
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- firestore에 user collection 을 만들고 id, pw, name 등 정보 저장
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- firestore 데이터를 읽어 로그인 정보 비교하여 로그인.
 
-## Learn More
+- 등록은 직접 firestore의 firebase 페이지를 통해 등록 (추후 등록페이지 작성 예정)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### 2) 조사원 이름
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- firestore 데이터와 비교하여 로그인 후 유저 정보를 읽어옴.
 
-### Code Splitting
+- 읽어온 유저 정보를 contextAPI 로 관리하여 전역에서 사용하도록 함.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- id는 sessionStorage에 저장하여 사용.
 
-### Analyzing the Bundle Size
+- 새로고침하면 리셋되는 contextAPI 문제 해결
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 2. 조사 분류별 다른 작성 페이지
 
-### Making a Progressive Web App
+#### 1) 조사 분류별 리스트 작성
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- firestore에 list collection 을 만들고 리스트 등록
 
-### Advanced Configuration
+- 등록된 list를 불러 오도록 함.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+#### 2) 조사 분류별 다른 페이지
 
-### Deployment
+- 조사 분류를 선택하면 조사 분류 정보를 sessionStorage에 저장하여 사용.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- 페이지별로 다른 문항을 작성하여야 하기 때문에 component를 잘 쪼개 역할에 맞게 재사용하도록 구성.
 
-### `npm run build` fails to minify
+### 3. 한번에 여러명을 관찰하여 여러개를 한번에 작성할 수 있도록 제작.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### 1) 한번에 여러명 관찰
+
+- 공통 정보와 개별 정보를 구분하여 component를 구성함.
+
+- 개별 정보 component는 사람을 추가하거나 삭제할 수 있도록 제작.
+
+### 4. 데이터 저장 & 중간 저장
+
+### 5. 관리자로 접속하여 쌓인 데이터를 일자별, 조사 분류별로 엑셀로 다운로드.
+
+#### 1) 데이터 보관
+
+- 일자별로 collection을 만들어 저장.
+
+- 조사 분류 구분은 조사 분류 code로 구분.
+
+#### 2) 엑셀로 다운로드
+
+- 엑셀로 작성되도록 데이터를 가공.
+
+- 마스터 아이디로 로그인 하면 조사시작이 아닌 다운로드로 생성.
+
+- 마스터 아이디는 상단에 일자를 변경할 수 있도록 구현.
