@@ -1,14 +1,14 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { readData } from "../firebase/firebase";
+import { allData, readData } from "../firebase/firebase";
 import { SubjectsContext } from "../store/Subjects";
 
 export default function List() {
   const nav = useNavigate();
   const context = useContext(SubjectsContext);
-  const { arr, setArr, setList } = context;
-  const name = sessionStorage.getItem("name");
+  const { arr, setArr, dataArr, setDataArr } = context;
+  const name = sessionStorage.getItem("id");
   useEffect(() => {
     readData(setArr, "list");
   }, [setArr]);
@@ -24,17 +24,23 @@ export default function List() {
               </div>
               <div className="btn-box">
                 {name === "master" ? (
-                  <button>다운로드</button>
+                  <button
+                    onClick={() => {
+                      (async () => {
+                        await allData(setDataArr, "20220425", item.code);
+                      })();
+                      console.log(dataArr);
+                    }}
+                  >
+                    다운로드
+                  </button>
                 ) : (
                   <button
                     onClick={() => {
-                      const object = {
-                        code: item.code,
-                        position: item.position,
-                        title: item.title,
-                      };
-                      setList(object);
-                      nav("/research");
+                      sessionStorage.setItem("list_code", item.code);
+                      sessionStorage.setItem("list_position", item.position);
+                      sessionStorage.setItem("list_title", item.title);
+                      nav(`/research/check${item.code}`);
                     }}
                   >
                     조사시작
