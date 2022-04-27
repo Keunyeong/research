@@ -16,20 +16,22 @@ export default function Research() {
         {sessionStorage.getItem("list_position")}{" "}
         {sessionStorage.getItem("list_title")}
       </h1>
-      <Info>
-        {sessionStorage.getItem("date")}
-        {username}
-      </Info>
-      <BtnBox>
-        <button
-          onClick={() => {
-            nav("/list");
-          }}
-        >
-          목록으로
-        </button>
-        <button>초기화</button>
-      </BtnBox>
+      <Head>
+        <Info>
+          <span>{sessionStorage.getItem("date")}</span>
+          <span>{username}</span>
+        </Info>
+        <BtnBox>
+          <button
+            onClick={() => {
+              nav("/list");
+            }}
+          >
+            목록으로
+          </button>
+          <button>초기화</button>
+        </BtnBox>
+      </Head>
 
       <Routes>
         <Route path="/check10" element={<Check10></Check10>}></Route>
@@ -51,7 +53,20 @@ const ResearchPage = styled.div`
   }
 `;
 
-const BtnBox = styled.div``;
+const Head = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const BtnBox = styled.div`
+  button {
+    margin: 0 10px;
+  }
+`;
 const Info = styled.div`
   display: flex;
+  margin-right: 30px;
+  span {
+    margin: 0 10px;
+  }
 `;
