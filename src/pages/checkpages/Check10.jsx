@@ -5,6 +5,7 @@ import Dropdown from "../../elements/Dropdown";
 import ListEl from "../../elements/ListEl";
 import Personal from "../../elements/Personal";
 import Radio from "../../elements/Radio";
+import Timestamp from "../../elements/TimeStamp";
 
 export default function Check10() {
   const [data, setData] = useState({
@@ -44,8 +45,24 @@ export default function Check10() {
             setData={setData}
           ></Radio>
         </ListEl>
-        <ListEl title="체크인 대기 시작"></ListEl>
-        <ListEl title="체크인 대기 종료"></ListEl>
+        {data["isWaiting"] === "대기 있음" && (
+          <>
+            <ListEl title="체크인 대기 시작">
+              <Timestamp
+                title="waitingStart"
+                position="start"
+                setData={setData}
+              ></Timestamp>
+            </ListEl>
+            <ListEl title="체크인 대기 종료">
+              <Timestamp
+                title="waitingFinish"
+                position="end"
+                setData={setData}
+              ></Timestamp>
+            </ListEl>
+          </>
+        )}
       </Personal>
     </CheckPage>
   );
