@@ -17,9 +17,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export const addData = async (date, data) => {
+export const addData = async (date, data, setIsSuccess) => {
   try {
     const docRef = await addDoc(collection(db, date), data);
+    setIsSuccess(true);
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);

@@ -3,19 +3,22 @@ import styled from "styled-components";
 
 export default function Timestamp({ title, position, setData, label }) {
   const [time, setTime] = useState("0000-00-00 00:00:00");
+  function convert(num) {
+    if (num < 10) {
+      num = `0${num}`;
+    } else {
+      num = `${num}`;
+    }
+    return num;
+  }
   const stamp = () => {
     const today = new Date();
     const year = today.getFullYear();
-    let month = Number(today.getMonth()) + 1;
-    if (month < 10) {
-      month = `0${month}`;
-    } else {
-      month = `${month}`;
-    }
-    const date = today.getDate();
-    const hour = today.getHours();
-    const minute = today.getMinutes();
-    const second = today.getSeconds();
+    const month = convert(Number(today.getMonth()) + 1);
+    const date = convert(today.getDate());
+    const hour = convert(today.getHours());
+    const minute = convert(today.getMinutes());
+    const second = convert(today.getSeconds());
     const now = `${year}-${month}-${date} ${hour}:${minute}:${second}`;
     setTime(now);
     setData((data) => ({ ...data, [title]: now }));

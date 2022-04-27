@@ -8,6 +8,7 @@ import Radio from "../../elements/Radio";
 import Timestamp from "../../elements/TimeStamp";
 
 export default function Check10() {
+  const [isSuccess, setIsSuccess] = useState(false);
   const [data, setData] = useState({
     code: Number(sessionStorage.getItem("list_code")),
     terminal: "T1",
@@ -37,7 +38,8 @@ export default function Check10() {
           ></Dropdown>
         </ListEl>
       </Common>
-      <Personal data={data}>
+
+      <Personal data={data} setIsSuccess={setIsSuccess} isSuccess={isSuccess}>
         <ListEl title="체크인 대기 여부">
           <Radio
             arr={["대기 있음", "대기 없음"]}
