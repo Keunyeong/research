@@ -50,6 +50,14 @@ export default function Login() {
           <input type="text" name="mnum" placeholder="사번을 입력해주세요." />
         </div>
         <LoginBtn type="submit">로그인</LoginBtn>
+        <LoginBtn
+          onClick={(e) => {
+            e.preventDefault();
+            navigator("/auth");
+          }}
+        >
+          본인인증하기
+        </LoginBtn>
       </LoginBox>
     </LoginPage>
   );

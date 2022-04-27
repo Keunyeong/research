@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import Auth from "./pages/Auth";
 import List from "./pages/List";
 import Login from "./pages/Login";
 import Research from "./pages/Research";
@@ -10,6 +11,7 @@ function App() {
     <Subjects>
       <Routes>
         <Route path="/" element={<Login />}></Route>
+        <Route path="/auth" element={<Auth />}></Route>
         <Route path="/list" element={<List />}></Route>
         <Route path="/Research/*" element={<Research />}></Route>
         <Route path="/result" element={<Result />}></Route>
